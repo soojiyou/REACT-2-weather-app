@@ -5,8 +5,32 @@ body {
   background-size: cover;
 }
 
+h1 {
+  color: rgb(83, 81, 81);
+}
+
 .button-additional {
   margin: 2px;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.search {
+  margin: 2px;
+  padding: 0;
+
+}
+
+.searchbar {
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid grey;
 }
 
 .container {

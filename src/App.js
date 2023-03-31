@@ -3,6 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WeatherBox from './component/WeatherBox';
 import WeatherButton from './component/WeatherButton';
+import { Button } from 'react-bootstrap';
 import ClipLoader from "react-spinners/ClipLoader";
 
 
@@ -11,8 +12,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 // 3. click the city buttons => show the weather informations
 // 4. click the current location button => show the weather information
 // 5. loading spinner until the weather information loaded
+// 6. make input box to get city input to show the weather information
 const API_KEY = 'ec700b8387676a0dc3b3ac989505350a';
-const cities = ['seoul', 'seattle', 'new york', 'los angeles', 'miami', 'london'];
+const cities = ['seoul', 'seattle', 'new york', 'los angeles'];
 // const API_KEY = process.env.REACT_APP_API_KEY;
 
 
@@ -22,7 +24,8 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [weathericon, setWeathericon] = useState(null);
-  // const [weatherpic, getWeatherPic] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
 
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -71,26 +74,35 @@ function App() {
     if (city === "current") { setCity(null); } else { setCity(city); }
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setCity(inputValue);
+    getWeatherByCity(city);
+  };
+
 
   useEffect(() => {
     if (city == null) { getCurrentLocation(); } else { getWeatherByCity(); console.log("check1", weathericon); }
   }, [city]);
 
-  // useEffect(() => {
-  //   if (weathericon != null) {
-  //     getWeatherPic(weathericon);
-  //     console.log("check2", updatepic, weathericon)
-  //   }
-  // }, [weathericon]);
+
 
   return (
     <div>
       {loading ? (<div className='container'>
+        <h1>WEATTHER TODAY</h1>
         <ClipLoader color="white" loading={loading} size={150} />
       </div>)
         : (<div className='container'>
+          <h1>WEATHER TODAY</h1>
           <WeatherBox weather={weather} city={city} weathericon={weathericon} />
           <WeatherButton cities={cities} selectedCity={city} handleCityChange={handleCityChange} />
+          <form onSubmit={handleSubmit} >
+            <input className="searchbar" type="text" placeholder="Type City Name" value={inputValue} onChange={(event) => setInputValue(event.target.value)} />
+            <Button className="search" variant="secondary" type="submit" value="Submit">Search</Button>
+          </form>
+
+
 
         </div>
         )}
